@@ -1,7 +1,10 @@
 import argparse
 from pathlib import Path
 import typing
+
 import yaml
+
+from src.model import storage
 
 
 class CommandArgument(typing.Protocol):
@@ -21,3 +24,5 @@ def exec_command(args: CommandArgument) -> None:
     with open(args.args, 'r') as stream:
         data = yaml.safe_load(stream)
         print(data)
+    walls_storage = storage.create_walls_storage(data['size']['points'])
+    print(walls_storage)
