@@ -1,7 +1,15 @@
+import abc
 import dataclasses
 from enum import Enum
 import typing
 import random
+
+import simpy
+
+
+class BaseModelAgent(abc.ABC):
+    @abc.abstractclassmethod
+    def run(self, env: simpy.Environment) -> None: ...
 
 
 @dataclasses.dataclass(frozen=True)
@@ -43,7 +51,7 @@ class Wall:
 
 
 @dataclasses.dataclass()
-class WallsStorage:
+class WallsStorage(BaseModelAgent):
     walls: typing.Collection[Wall]
 
     def check_collision_wall(self, point: Point) -> bool:
@@ -51,6 +59,9 @@ class WallsStorage:
             if wall.check_collision_point(point):
                 return True
         return False
+
+    def run(self, env: simpy.Environment) -> None:
+        pass
 
 
 def create_walls_storage(val_point: typing.Collection[typing.Tuple[int, int]]) -> WallsStorage:
@@ -69,12 +80,18 @@ class MailPackage:
     message: str = dataclasses.field(default='')
 
 
-class Robot:
-    def __init__(self, id, location_point, direction, package_mail=None) -> None:
-        self.id: int = id
-        self.location_point: Point = location_point
-        self.direction: Point = direction
-        self.package_mail: typing.Optional[MailPackage] = package_mail
+class Robot(BaseModelAgent):
+    def __init__(
+        self,
+        id: int,
+        location_point: Point,
+        direction: Point,
+        package_mail: typing.Optional[MailPackage] = None
+    ) -> None:
+        self.id = id
+        self.location_point = location_point
+        self.direction = direction
+        self.package_mail = package_mail
 
     def move_forward(self) -> None:
         self.location_point += self.direction
@@ -92,22 +109,25 @@ class Robot:
         pass
 
     def take_package(self, mail: MailPackage) -> None:
-        assert not self.package_mail, 'У робота уже есть поссылка.'
+        assert not self.package_mail, 'The robot has a package.'
         self.package_mail = mail
 
     def give_package(self) -> MailPackage:
-        assert self.package_mail, 'У робота нет поссылки.'
+        assert self.package_mail, 'The robot does not have a package.'
         mail = self.package_mail
         self.package_mail = None
         return mail
 
+    def run(self, env: simpy.Environment) -> None:
+        pass
 
-class PackageConveyor:
+
+class PackageConveyor(BaseModelAgent):
     _global_id_mail = 0
 
-    def __init__(self, id, location_point, types_mail: typing.Collection[str]) -> None:
-        self.id: int = id
-        self.location_point: Point = location_point
+    def __init__(self, id: int, location_point: Point, types_mail: typing.Collection[str]) -> None:
+        self.id = id
+        self.location_point = location_point
         self.types_mail = types_mail
 
     def return_package_mail(self) -> MailPackage:
@@ -115,25 +135,34 @@ class PackageConveyor:
         PackageConveyor._global_id_mail += 1
         return mail
 
-
-class PackageStorage:
-    def __init__(self, id, location_point) -> None:
-        self.id: int = id
-        self.location_point: Point = location_point
+    def run(self, env: simpy.Environment) -> None:
+        pass
 
 
-class StorageSystem():
+class PackageStorage(BaseModelAgent):
+    def __init__(self, id: int, location_point: Point) -> None:
+        self.id = id
+        self.location_point = location_point
+
+    def run(self) -> None:
+        pass
+
+
+class StorageSystem(BaseModelAgent):
     def __init__(
         self,
         walls_storage: WallsStorage,
         package_conveyors: typing.Collection[PackageConveyor],
         package_storages: typing.Collection[PackageStorage],
         robots: typing.Collection[Robot],
+        env: simpy.Environment = simpy.Environment(),
     ) -> None:
-        self.walls_storage: WallsStorage = walls_storage
-        self.package_conveyors: typing.Collection[PackageConveyor] = package_conveyors
-        self.package_storages: typing.Collection[PackageConveyor] = package_storages
-        self.robots: typing.Collection[Robot] = robots
+        self.walls_storage = walls_storage
+        self.package_conveyors = package_conveyors
+        self.package_storages = package_storages
+        self.robots = robots
+        self.env = env
 
-    def modeling_storage() -> None:
-        pass
+    def run(self) -> None:
+        for robot in self.robots:
+            self.env.process(robot.run())
