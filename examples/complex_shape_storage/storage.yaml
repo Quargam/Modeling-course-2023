@@ -1,0 +1,23 @@
+shape: 
+  walls: [[0, 0], [0, 15], [10, 15], [10, 10], [15, 10], [15, 15], [25, 15], [25, 0]]
+  points: [
+      [[2, 2], [2, 5]],
+      [[2, 5], [10, 5]],
+      [12, 5],
+      [13, 6],
+      [14, 7],
+      [15, 8],
+    ]
+robot:
+  locations: [[3, 3], [3, 4]]
+package_conveyors:
+  [
+    {locations: [6, 6], types: [mail, box, bag]},
+    {locations: [8, 8], types: [mail, box]},
+  ]
+package_storages:
+  [
+    {locations: [11, 4], types: [mail]},
+    {locations: [11, 6], types: [box]},
+    {locations: [18, 8], types: [bag]},
+  ]

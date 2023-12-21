@@ -17,7 +17,7 @@ def parse_arguments(cmd_args: typing.Optional[typing.List[str]]) -> argparse.Nam
 
 def main(cmd_args: typing.Optional[typing.List[str]]) -> None:
     args = parse_arguments(cmd_args)
-    args.command(args)  # Запуск команды с аргуметом.
+    args.command(args)  # Запуск команды с аргументом.
 
 
 if __name__ == '__main__':
