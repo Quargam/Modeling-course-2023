@@ -17,7 +17,7 @@
             "type": "python",
             "request": "launch",
             "program": "main.py",
-            "args": ["model", "examples/square_storage/storage.yaml"],
+            "args": ["model", "examples/square_storage/storage.yaml",  "--log-file", "log_file.txt"],
             "console": "integratedTerminal",
             "justMyCode": true
         },
@@ -26,7 +26,16 @@
             "type": "python",
             "request": "launch",
             "program": "main.py",
-            "args": ["model", "examples/complex_shape_storage/storage.yaml"],
+            "args": ["model", "examples/complex_shape_storage/storage.yaml",  "--log-file", "log_file.txt"],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "run AV",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "args": ["model", "examples/AV_storage/storage.yaml",  "--log-file", "log_file.txt"],
             "console": "integratedTerminal",
             "justMyCode": true
         },

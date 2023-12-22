@@ -1,0 +1,31 @@
+shape:
+  walls: [[0, 0], [0, 10], [10, 10], [10, 0]]
+  points: [
+      [[6,4],[10,4]],
+      [[4,6],[7,6]],
+    ]
+robot: 
+  locations: [
+      [3, 4],
+      [2, 6],
+      [3, 7],
+      [7, 3],
+      [8, 6],
+      [9, 7],
+    ]
+package_conveyors:
+  [
+    {
+      locations: [5, 9],
+      types: [mail_1, mail_2, mail_3],
+      expectation: [0.8, 0.15, 0.05],
+      out_point: [5, 8],
+    },
+  ]
+package_storages:
+  [
+    {locations: [2, 1], types: [mail_1]},
+    {locations: [5, 1], types: [mail_2]},
+    {locations: [8, 1], types: [mail_3]},
+  ]
+max_package: 100000

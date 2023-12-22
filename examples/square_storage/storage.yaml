@@ -2,12 +2,22 @@ shape:
   walls: [[0, 0], [0, 11], [11, 11], [11, 0]]
   points: []
 robot: 
-  locations: [[2, 2]]
+  locations: [
+      [2, 2],
+      [2, 3],
+      [2, 4],
+      [2, 5],
+    ]
 package_conveyors:
   [
-    {locations: [1, 1], types: [mail, box]},
+    {
+      locations: [1, 1], types: [mail,],
+    },
   ]
 package_storages:
   [
-    {locations: [7, 7], types: [mail, box]},
+    {
+      locations: [10, 10], types: [mail,]
+    },
   ]
+max_package: 10000

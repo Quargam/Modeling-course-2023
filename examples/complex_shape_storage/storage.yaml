@@ -21,3 +21,4 @@ package_storages:
     {locations: [11, 6], types: [box]},
     {locations: [18, 8], types: [bag]},
   ]
+max_package: 10000

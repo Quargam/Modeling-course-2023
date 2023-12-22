@@ -15,7 +15,7 @@ class TypeTile(Enum):
     storage = auto()
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass()
 class Point:
     x: int
     y: int
@@ -23,6 +23,16 @@ class Point:
     @classmethod
     def from_tuple(cls, location):
         return cls(*location)
+
+    def __add__(self, other):
+        if isinstance(other, Point):
+            return Point(self.x + other.x, self.y + other.y)
+        raise TypeError("Unsupported operand type for +")
+
+    def __sub__(self, other):
+        if isinstance(other, Point):
+            return Point(self.x - other.x, self.y - other.y)
+        raise TypeError("Unsupported operand type for -")
 
     def __str__(self) -> str:
         return f'({self.x:3}, {self.y:3})'
@@ -33,6 +43,7 @@ class Direction(Enum):
     DOWN = Point(0, -1)
     RIGHT = Point(1, 0)
     LEFT = Point(-1, 0)
+    HOLDING = Point(0, 0)
 
 
 @dataclasses.dataclass()
@@ -60,13 +71,24 @@ class TilesMap:
         return '\n'.join(res)
 
     def is_valid_move(self, point: Point) -> bool:
+        """checks only for any objects"""
         return 0 <= point.x < self.size[0] \
             and 0 <= point.y < self.size[1] \
             and self.tiles_map[point.y][point.x].type_tile == TypeTile.empty
 
+    def is_check_block_move(self, point: Point) -> bool:
+        """checks only for static objects"""
+        return 0 <= point.x < self.size[0] \
+            and 0 <= point.y < self.size[1] \
+            and (self.tiles_map[point.y][point.x].type_tile == TypeTile.empty
+                 or self.tiles_map[point.y][point.x].type_tile == TypeTile.robot)
+
     def set_type_tile(self, point: Point, type_tile: TypeTile) -> None:
         assert self.is_valid_move(point)
         self.tiles_map[point.y][point.x].type_tile = type_tile
+
+    def reset_type_tile(self, point: Point) -> None:
+        self.tiles_map[point.y][point.x].type_tile = TypeTile.empty
 
 
 @dataclasses.dataclass(frozen=True)
