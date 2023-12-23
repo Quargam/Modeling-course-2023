@@ -28,4 +28,4 @@ package_storages:
     {locations: [5, 1], types: [mail_2]},
     {locations: [8, 1], types: [mail_3]},
   ]
-max_package: 100000
+max_package: 1000000

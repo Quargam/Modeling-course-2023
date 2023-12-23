@@ -39,5 +39,14 @@
             "console": "integratedTerminal",
             "justMyCode": true
         },
+        {
+            "name": "analys",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "args": ["analys", "log_file_2.csv"],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
     ]
 }

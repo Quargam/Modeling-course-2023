@@ -3,7 +3,7 @@ import typing
 import sys
 
 
-from src.commands import model
+from src.commands import analysis, model
 
 
 def parse_arguments(cmd_args: typing.Optional[typing.List[str]]) -> argparse.Namespace:
@@ -11,6 +11,9 @@ def parse_arguments(cmd_args: typing.Optional[typing.List[str]]) -> argparse.Nam
     subparsers = arg_parser.add_subparsers()
     model.parse_arguments(subparsers.add_parser(
         'model',
+    ))
+    analysis.parse_arguments(subparsers.add_parser(
+        'analys',
     ))
     return arg_parser.parse_args(cmd_args)
 
